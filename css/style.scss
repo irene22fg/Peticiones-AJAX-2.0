@@ -1,0 +1,165 @@
+$colorFondo: #333;
+$colorBoton:rgb(203, 247, 203);
+$hover: rgb(29, 112, 21) ;
+$distancia: 10px;
+@mixin cajita{
+    border-radius: 4px;
+    border: 1.5px solid $hover;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: white;
+    position: relative;
+    padding-bottom: 58px;
+    min-height: 100vh;
+}
+
+#opciones {
+    display: flex;
+    justify-content: center;
+    width: 420px;
+    height: 200px;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    margin-top: 200px;
+
+    h2 {
+        color: rgb(4, 102, 4);
+        width: 500px;
+    }
+
+    button {
+        margin: 10px;
+        margin-left: -5px;
+        width: 300px;
+        background-color: $colorBoton;
+        border-color: rgb(149, 223, 149);
+        color: green;
+        border-radius: 10px;
+        font-size: 28px;
+        font-weight: 500;
+    }
+
+    button:hover {
+        margin: 10px;
+        margin-left: -5px;
+        width: 300px;
+        background-color: $hover;
+        color: $colorBoton;
+        border-radius: 10px;
+        border-color: $colorBoton;
+        font-size: 28px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+    button:active {
+        outline: none;
+    }    
+}
+
+header {
+    text-align: center;
+    background-color: $colorFondo;
+    color: rgb(228, 161, 17);
+    padding: 10px;
+
+    h1 {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+}
+
+main {
+    width: 90vw;
+    margin: 0 auto;
+    padding: 30px 20px;
+
+    #containerMenu{
+        display: flex;
+        justify-content: space-between;
+
+        p{
+            color:$hover
+        }
+
+        input{
+            @include cajita();
+        }
+
+        button{
+            @include cajita();
+        }
+    }
+
+    #containerTienda{
+
+        #formulario{
+            input{
+                width: 45%;
+            }
+
+
+
+
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+        }
+
+        .tienda{
+
+            h2{
+                color:$hover
+            }
+
+            > * {
+                margin:7px;
+            }
+
+            box-shadow: 9px 10px 12px -4px rgba(0,0,0,0.68);
+            border: 2px solid;
+            border-color: rgb(125, 206, 125);
+            border-radius: 8px;
+            margin: $distancia;
+            padding: $distancia;
+        }
+    }
+}
+
+
+
+footer {
+    text-align: center;
+    background-color: $colorFondo;
+    color: rgb(228, 161, 17);
+    padding: 20px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+@media(max-width:768px) {
+    header {
+        padding: 30px 20px;
+    }
+
+    header h1 {
+        font-size: 36px;
+        margin-bottom: 22px;
+    }
+
+    header p {
+        font-size: 18px;
+    }
+
+    main {
+        width: 100vw;
+        padding: 20px;
+    }
+}
