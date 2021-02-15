@@ -62,13 +62,13 @@ async function pruebaFetch() {
 
 function sacarLista(data) {
     let containerMenu = crearNodo("div", "", [], [{ name: "id", value: "containerMenu" }]);
-    containerMenu.appendChild(crearNodo("p", "Nueva tienda", [], []));
+    containerMenu.appendChild(crearNodo("a", "Nueva tienda", [], [{name:"href", value:""}, {name:"id", value:"linkDesplegable"}]));
     let containerBuscar = crearNodo("div", "", [], []);
     containerBuscar.appendChild(crearNodo("input", "", [], [{ name: "type", value: "text" }, { name: "placeholder", value: "Buscar tienda por ID" }, { name: "value", value: "" }, {name:"id", value:"buscarId"}]));
     containerBuscar.appendChild(crearNodo("button", "🔍", [], []));
     containerMenu.appendChild(containerBuscar);
     let containerTienda = crearNodo("div", "", [], [{ name: "id", value: "containerTienda" }]);
-    let divFormulario = crearNodo("div", "", ["tienda"], [{name:"id", value:"divFormulario"}])
+    let divFormulario = crearNodo("div", "", ["tienda"], [{name:"id", value:"divFormulario"}]);
     divFormulario.appendChild(crearNodo("h2", "Nueva empresa", [], []));
     let divInputs = crearNodo("div", "", [], [{name:"id", value:"formulario"}]);
     divInputs.appendChild(crearNodo("h4", "Nombre", [], []));
@@ -94,6 +94,9 @@ function sacarLista(data) {
     main.appendChild(containerMenu);
     main.appendChild(containerTienda);
 }
+let a = document.getElementById("linkDesplegable").addEventListener('click', () => {      //hacer transición
+    document.getElementById("divFormulario").style.display="none";
+});
 
 function borrarNodo(nodo) {
     while (nodo.firstChild) {
