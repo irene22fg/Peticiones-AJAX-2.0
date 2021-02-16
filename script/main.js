@@ -98,7 +98,7 @@ function sacarLista(data) {
     containerMenu.appendChild(botonTienda);
     let containerBuscar = crearNodo("div", "", [], []);
     containerBuscar.appendChild(crearNodo("input", "", [], [{ name: "type", value: "text" }, { name: "placeholder", value: "Buscar tienda por ID" }, { name: "value", value: "" }, { name: "id", value: "buscarId" }]));
-    let botonBuscar = crearNodo("button", "🔍", [], []);
+    let botonBuscar = crearNodo("button", "🔍", [], [{name:"id", value:"botonLupa"}]);
     botonBuscar.addEventListener('click', optionAJAXGet);
     containerBuscar.appendChild(botonBuscar);
     containerMenu.appendChild(containerBuscar);
@@ -188,26 +188,22 @@ function getIDJQuery() {
     });
 }
 
-async function postXHR() {
-    //let data = checkForm();
+async function postXHR() {    //POST XHR
     let data = info();
     if (data != -1) {
         let http = new XMLHttpRequest();
         http.open('POST', 'https://webapp-210130211157.azurewebsites.net/webresources/mitienda/', true);
         http.setRequestHeader('Content-type', 'application/json');
         http.onreadystatechange = function () {
-            let dataArr = [];
-            dataArr.push(data);
-            sacarLista(dataArr);
+            getTiendasXHR();
         }
         http.send(JSON.stringify(data));
-        sacarLista(data);
     }
 }
 
-async function postFetch() {    //BUSCAR TIENDA FETCH
+async function postFetch() {    //POST TIENDA FETCH
     let data = info();
-    const rawResponse = await fetch('https://webapp-210130211157.azurewebsites.net/webresources/mitienda/', {
+    await fetch('https://webapp-210130211157.azurewebsites.net/webresources/mitienda/', {
         method: "POST",
         headers: {
             'Accept': 'application/json',
@@ -215,10 +211,22 @@ async function postFetch() {    //BUSCAR TIENDA FETCH
         },
         body: JSON.stringify(data)
     })
-    let dataArr = [];
-    dataArr.push(data);
-    sacarLista(dataArr);
+    getTiendasFetch();
+}
 
+async function postJQuery(){    //POST TIENDA JQUERY
+    $.ajax({
+        type: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        data : JSON.stringify(info()),
+        url: 'https://webapp-210130211157.azurewebsites.net/webresources/mitienda/',
+        
+    })
+    .fail(console.log("Hubo errores al introducir la tienda(?)"))
+    .always(getTiendasJQuery())
 }
 
 function info() {
