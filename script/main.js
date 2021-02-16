@@ -17,13 +17,13 @@ let main = document.getElementsByTagName("main")[0];
 function optionAJAXGet(){
     if(metodo == "xhr")
         getIDXHR();
-    /* else if(metodo == "fetch")
+    else if(metodo == "fetch")
         getIDFetch();
     else
-        getIDJQuery(); */
+        getIDJQuery();
 }
 
-function getTiendasXHR() {
+function getTiendasXHR() {   //MOSTRAR TIENDAS XHR
     loader();
     let conection = new XMLHttpRequest();
     conection.addEventListener('readystatechange', () => {
@@ -40,7 +40,7 @@ function getTiendasXHR() {
     console.log("Mostrado por peticion XHR");
 }
 
-async function getTiendasJQuery() {
+async function getTiendasJQuery() {    //MOSTRAR TIENDAS JQUERY 
     loader();
     await $.ajax({
         type: "GET",
@@ -53,16 +53,14 @@ async function getTiendasJQuery() {
         },
         error: () => {
             alert("error");
-        },
-        always: () => {
-            console.log("complete");
         }
     });
 
     console.log("Mostrado por peticion JQuery");
 }
 
-async function getTiendasFetch() {
+async function getTiendasFetch() {     //MOSTRAR TIENDAS FETCH
+    loader();
     await fetch('https://webapp-210130211157.azurewebsites.net/webresources/mitienda/')
         .then(function (response) {
             return response.text();
@@ -126,7 +124,7 @@ function sacarLista(data) {
     main.appendChild(containerTienda);
 }
 
-async function getIDXHR(){
+async function getIDXHR(){   //BUSCAR TIENDA XHR
     let client = new XMLHttpRequest();
     borrarNodo(document.getElementById("containerTienda"));
     let id = document.getElementById("buscarId").value;
@@ -146,6 +144,40 @@ async function getIDXHR(){
     }
     else
         console.log("Hubo un error al buscar la tienda");
+}
+
+async function getIDFetch(){    //BUSCAR TIENDA FETCH
+    let id = document.getElementById("buscarId").value;
+    await fetch('https://webapp-210130211157.azurewebsites.net/webresources/mitienda/' + id)
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (data) {
+            data = JSON.parse(data);
+            let dataArr = [];
+            dataArr.push(data);
+            sacarLista(dataArr);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
+
+function getIDJQuery(){
+    let id = document.getElementById("buscarId").value;
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: 'https://webapp-210130211157.azurewebsites.net/webresources/mitienda/' + id,
+        success: data => {
+            let dataArr = [];
+            dataArr.push(data);
+            sacarLista(dataArr);
+        },
+        error: (error) => {
+            console.log(error);
+        }
+    });
 }
 
 function loader(){
