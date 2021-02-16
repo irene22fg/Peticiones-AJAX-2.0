@@ -1,11 +1,45 @@
 const client = new XMLHttpRequest();
+let metodo;
 
-document.getElementById("xhr").addEventListener('click', pruebaXHR);
-document.getElementById("fetch").addEventListener('click', pruebaFetch);
-document.getElementById("jquery").addEventListener('click', pruebaJQuery);
+document.getElementById("xhr").addEventListener('click', () => {
+    metodo = "xhr";
+    getTiendasXHR();
+});
+document.getElementById("fetch").addEventListener('click', () => {
+    metodo = "fetch";
+    getTiendasFetch();
+});
+document.getElementById("jquery").addEventListener('click', () => {
+    metodo = "jquery";
+    getTiendasJQuery();
+});
 let main = document.getElementsByTagName("main")[0];
 
-function pruebaXHR() {
+function optionAJAXGet(){
+
+    if(metodo == "XHR")
+        getIDXHR();
+    else if(metodo == "fetch")
+        getIDFetch();
+    else
+        getIDJQuery();
+}
+
+function getIDXHR(){
+    if (client.readyState === 4 && client.status === 200) {
+        let data = client.responseText;
+        data = JSON.parse(data);
+        console.log(data);
+        borrarNodo(main);
+        sacarLista(data);
+    }
+    client.open("GET", "https://webapp-210130211157.azurewebsites.net/webresources/mitienda/", true);
+    client.send();
+
+    console.log("Mostrado por peticion XHR");
+}
+
+function getTiendasXHR() {
 
     if (client.readyState === 4 && client.status === 200) {
         let data = client.responseText;
@@ -20,7 +54,7 @@ function pruebaXHR() {
     console.log("Mostrado por peticion XHR");
 }
 
-function pruebaJQuery() {
+function getTiendasJQuery() {
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -42,7 +76,7 @@ function pruebaJQuery() {
     console.log("Mostrado por peticion JQuery");
 }
 
-async function pruebaFetch() {
+async function getTiendasFetch() {
     await fetch('https://webapp-210130211157.azurewebsites.net/webresources/mitienda/')
         .then(function (response) {
             return response.text();
@@ -62,13 +96,24 @@ async function pruebaFetch() {
 
 function sacarLista(data) {
     let containerMenu = crearNodo("div", "", [], [{ name: "id", value: "containerMenu" }]);
-    containerMenu.appendChild(crearNodo("a", "Nueva tienda", [], [{name:"href", value:""}, {name:"id", value:"linkDesplegable"}]));
+    let botonTienda = crearNodo("button", "Nueva tienda", [], [{name:"id", value:"nuevaTienda"}])
+    botonTienda.addEventListener('click', () => {      //hacer transición formulario
+        if(divFormulario.classList.contains("abierto")){
+            document.getElementById("divFormulario").classList.replace("abierto", "cerrado");
+        }
+        else{
+            document.getElementById("divFormulario").classList.replace("cerrado", "abierto");
+        }
+    });
+    containerMenu.appendChild(botonTienda);
     let containerBuscar = crearNodo("div", "", [], []);
     containerBuscar.appendChild(crearNodo("input", "", [], [{ name: "type", value: "text" }, { name: "placeholder", value: "Buscar tienda por ID" }, { name: "value", value: "" }, {name:"id", value:"buscarId"}]));
-    containerBuscar.appendChild(crearNodo("button", "🔍", [], []));
+    let botonBuscar = crearNodo("button", "🔍", [], []);
+    botonBuscar.addEventListener('click', optionAJAXGet());
+    containerBuscar.appendChild(botonBuscar);
     containerMenu.appendChild(containerBuscar);
     let containerTienda = crearNodo("div", "", [], [{ name: "id", value: "containerTienda" }]);
-    let divFormulario = crearNodo("div", "", ["tienda"], [{name:"id", value:"divFormulario"}]);
+    let divFormulario = crearNodo("div", "", ["tienda", "abierto"], [{name:"id", value:"divFormulario"}]);
     divFormulario.appendChild(crearNodo("h2", "Nueva empresa", [], []));
     let divInputs = crearNodo("div", "", [], [{name:"id", value:"formulario"}]);
     divInputs.appendChild(crearNodo("h4", "Nombre", [], []));
@@ -94,9 +139,6 @@ function sacarLista(data) {
     main.appendChild(containerMenu);
     main.appendChild(containerTienda);
 }
-let a = document.getElementById("linkDesplegable").addEventListener('click', () => {      //hacer transición
-    document.getElementById("divFormulario").style.display="none";
-});
 
 function borrarNodo(nodo) {
     while (nodo.firstChild) {

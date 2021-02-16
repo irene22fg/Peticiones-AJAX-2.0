@@ -4,6 +4,7 @@
   box-sizing: border-box; }
 
 body {
+  font-family: Arial, Helvetica, sans-serif;
   background-color: white;
   position: relative;
   padding-bottom: 58px;
@@ -70,12 +71,34 @@ main {
     main #containerMenu button {
       border-radius: 4px;
       border: 1.5px solid #1d7015; }
+  main #containerTienda .abierto {
+    display: block;
+    cursor: pointer; }
+  main #containerTienda .cerrado {
+    display: none; }
   main #containerTienda #formulario {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap; }
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr; }
     main #containerTienda #formulario input {
-      width: 45%; }
+      margin-left: -50px;
+      margin-bottom: 7px;
+      width: 100%; }
+  main #containerTienda #containerBoton {
+    display: flex;
+    justify-content: flex-end; }
+    main #containerTienda #containerBoton button {
+      background-color: #cbf7cb;
+      border-color: #95df95;
+      color: green;
+      border-radius: 4px; }
+    main #containerTienda #containerBoton button:hover {
+      background-color: #1d7015;
+      color: #cbf7cb;
+      border-color: #cbf7cb;
+      cursor: pointer; }
+    main #containerTienda #containerBoton button:active {
+      outline: none; }
   main #containerTienda .tienda {
     box-shadow: 9px 10px 12px -4px rgba(0, 0, 0, 0.68);
     border: 2px solid;
