@@ -1,4 +1,3 @@
-const client = new XMLHttpRequest();
 let metodo;
 
 document.getElementById("xhr").addEventListener('click', () => {
@@ -25,27 +24,30 @@ function optionAJAXGet(){
 }
 
 function getTiendasXHR() {
-    if (client.readyState === 4 && client.status === 200) {
-        let data = client.responseText;
-        data = JSON.parse(data);
-        console.log(data);
-        borrarNodo(main);
-        sacarLista(data);
-    }
-    client.open("GET", "https://webapp-210130211157.azurewebsites.net/webresources/mitienda/", true);
-    client.send();
+    loader();
+    let conection = new XMLHttpRequest();
+    conection.addEventListener('readystatechange', () => {
+        if (conection.readyState === 4 && conection.status === 200) {
+            let data = conection.responseText;
+            data = JSON.parse(data);
+            borrarNodo(main);
+            sacarLista(data);
+        }
+    })
+    conection.open("GET", "https://webapp-210130211157.azurewebsites.net/webresources/mitienda/", true);
+    conection.send();
 
     console.log("Mostrado por peticion XHR");
 }
 
-function getTiendasJQuery() {
-    $.ajax({
+async function getTiendasJQuery() {
+    loader();
+    await $.ajax({
         type: "GET",
         dataType: "json",
         url: 'https://webapp-210130211157.azurewebsites.net/webresources/mitienda/',
         success: data => {
             // en data tenemos lo recibido
-            console.log(data);
             borrarNodo(main);
             sacarLista(data);
         },
@@ -67,7 +69,6 @@ async function getTiendasFetch() {
         })
         .then(function (data) {
             data = JSON.parse(data);
-            console.log(data);
             borrarNodo(main);
             sacarLista(data);
         })
@@ -79,6 +80,7 @@ async function getTiendasFetch() {
 }
 
 function sacarLista(data) {
+    borrarNodo(main);
     let containerMenu = crearNodo("div", "", [], [{ name: "id", value: "containerMenu" }]);
     let botonTienda = crearNodo("button", "Nueva tienda", [], [{name:"id", value:"nuevaTienda"}])
     botonTienda.addEventListener('click', () => {      //hacer transición formulario
@@ -124,22 +126,32 @@ function sacarLista(data) {
     main.appendChild(containerTienda);
 }
 
-function getIDXHR(){
-    //let id = document.getElementById("buscarId").value;
-    if (client.readyState === 4 && client.status === 200) {
-        let data = client.responseText;
-        data = JSON.parse(data);
-        //data = data.find(tienda => {tienda.idTienda == id});
-        console.log(data);
-        if(data != undefined){
-            borrarNodo(main);
-            sacarLista(data);
-        }
-        else
-            console.log("Hubo un error al buscar la tienda");
+async function getIDXHR(){
+    let client = new XMLHttpRequest();
+    borrarNodo(document.getElementById("containerTienda"));
+    let id = document.getElementById("buscarId").value;
+    if(id != null || id == undefined || id == ""){
+        client.addEventListener("readystatechange", () => {
+            if (client.readyState === 4 && client.status === 200){
+                let data = client.responseText;
+                data = JSON.parse(data);
+                let dataArr = [];
+                dataArr.push(data);
+                sacarLista(dataArr);
+            }
+        });
+
+        client.open("GET", "https://webapp-210130211157.azurewebsites.net/webresources/mitienda/" + id);
+        client.send();
     }
-    client.open("GET", "https://webapp-210130211157.azurewebsites.net/webresources/mitienda/4", true);
-    client.send();
+    else
+        console.log("Hubo un error al buscar la tienda");
+}
+
+function loader(){
+    borrarNodo(main);
+    let img = crearNodo("img", "", ["loader"], [{name:"src", value:"./img/loading.png"}]);
+    main.appendChild(img);
 }
 
 function borrarNodo(nodo) {

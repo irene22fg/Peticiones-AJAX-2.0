@@ -67,10 +67,7 @@ main {
       color: #1d7015; }
     main #containerMenu a {
       text-decoration: none; }
-    main #containerMenu input {
-      border-radius: 4px;
-      border: 1.5px solid #1d7015; }
-    main #containerMenu button {
+    main #containerMenu input, main #containerMenu button {
       border-radius: 4px;
       border: 1.5px solid #1d7015; }
   main #containerTienda .abierto {
@@ -122,6 +119,11 @@ footer {
   bottom: 0;
   width: 100%; }
 
+.loader {
+  width: 150px;
+  height: 150px;
+  animation: loader 1.5s linear infinite; }
+
 @media (max-width: 768px) {
   header {
     padding: 30px 20px; }
@@ -133,3 +135,9 @@ footer {
   main {
     width: 100vw;
     padding: 20px; } }
+
+@keyframes loader {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
