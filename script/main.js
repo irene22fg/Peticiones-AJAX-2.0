@@ -16,31 +16,15 @@ document.getElementById("jquery").addEventListener('click', () => {
 let main = document.getElementsByTagName("main")[0];
 
 function optionAJAXGet(){
-
-    if(metodo == "XHR")
+    if(metodo == "xhr")
         getIDXHR();
-    else if(metodo == "fetch")
+    /* else if(metodo == "fetch")
         getIDFetch();
     else
-        getIDJQuery();
-}
-
-function getIDXHR(){
-    if (client.readyState === 4 && client.status === 200) {
-        let data = client.responseText;
-        data = JSON.parse(data);
-        console.log(data);
-        borrarNodo(main);
-        sacarLista(data);
-    }
-    client.open("GET", "https://webapp-210130211157.azurewebsites.net/webresources/mitienda/", true);
-    client.send();
-
-    console.log("Mostrado por peticion XHR");
+        getIDJQuery(); */
 }
 
 function getTiendasXHR() {
-
     if (client.readyState === 4 && client.status === 200) {
         let data = client.responseText;
         data = JSON.parse(data);
@@ -107,13 +91,13 @@ function sacarLista(data) {
     });
     containerMenu.appendChild(botonTienda);
     let containerBuscar = crearNodo("div", "", [], []);
-    containerBuscar.appendChild(crearNodo("input", "", [], [{ name: "type", value: "text" }, { name: "placeholder", value: "Buscar tienda por ID" }, { name: "value", value: "" }, {name:"id", value:"buscarId"}]));
+    containerBuscar.appendChild(crearNodo("input", "", [], [{ name: "type", value: "text" }, { name: "placeholder", value: "Buscar tienda por ID" }, {name: "value", value: "" }, {name:"id", value:"buscarId"}]));
     let botonBuscar = crearNodo("button", "🔍", [], []);
-    botonBuscar.addEventListener('click', optionAJAXGet());
+    botonBuscar.addEventListener('click', optionAJAXGet);
     containerBuscar.appendChild(botonBuscar);
     containerMenu.appendChild(containerBuscar);
     let containerTienda = crearNodo("div", "", [], [{ name: "id", value: "containerTienda" }]);
-    let divFormulario = crearNodo("div", "", ["tienda", "abierto"], [{name:"id", value:"divFormulario"}]);
+    let divFormulario = crearNodo("div", "", ["tienda", "cerrado"], [{name:"id", value:"divFormulario"}]);
     divFormulario.appendChild(crearNodo("h2", "Nueva empresa", [], []));
     let divInputs = crearNodo("div", "", [], [{name:"id", value:"formulario"}]);
     divInputs.appendChild(crearNodo("h4", "Nombre", [], []));
@@ -138,6 +122,24 @@ function sacarLista(data) {
     });
     main.appendChild(containerMenu);
     main.appendChild(containerTienda);
+}
+
+function getIDXHR(){
+    //let id = document.getElementById("buscarId").value;
+    if (client.readyState === 4 && client.status === 200) {
+        let data = client.responseText;
+        data = JSON.parse(data);
+        //data = data.find(tienda => {tienda.idTienda == id});
+        console.log(data);
+        if(data != undefined){
+            borrarNodo(main);
+            sacarLista(data);
+        }
+        else
+            console.log("Hubo un error al buscar la tienda");
+    }
+    client.open("GET", "https://webapp-210130211157.azurewebsites.net/webresources/mitienda/4", true);
+    client.send();
 }
 
 function borrarNodo(nodo) {

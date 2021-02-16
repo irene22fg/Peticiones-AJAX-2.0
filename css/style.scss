@@ -15,6 +15,10 @@ $borderRadius: 4px;
 }
 
 body {
+    button{
+        outline: 0;
+    }
+    
     font-family: Arial, Helvetica, sans-serif;
     background-color: white;
     position: relative;
