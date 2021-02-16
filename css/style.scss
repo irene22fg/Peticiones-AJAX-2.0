@@ -101,6 +101,23 @@ main {
         input, button{
             @include cajita();
         }
+        button{
+            background-color: $colorBoton;
+            border-color: rgb(149, 223, 149);
+            color: green;
+            border-radius: $borderRadius;
+        }
+
+        button:hover {
+            background-color: $hover;
+            color: $colorBoton;
+            border-color: $colorBoton;
+            cursor: pointer;
+        }
+
+        button:active {
+            outline: none;
+        }
     }
 
     #containerTienda{
@@ -180,8 +197,8 @@ footer {
 }
 
 .loader{
-    width: 150px;
-    height: 150px;
+    width: 50px;
+    height: 50px;
     animation: loader 1.5s linear infinite;
 }
 

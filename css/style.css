@@ -70,6 +70,18 @@ main {
     main #containerMenu input, main #containerMenu button {
       border-radius: 4px;
       border: 1.5px solid #1d7015; }
+    main #containerMenu button {
+      background-color: #cbf7cb;
+      border-color: #95df95;
+      color: green;
+      border-radius: 4px; }
+    main #containerMenu button:hover {
+      background-color: #1d7015;
+      color: #cbf7cb;
+      border-color: #cbf7cb;
+      cursor: pointer; }
+    main #containerMenu button:active {
+      outline: none; }
   main #containerTienda .abierto {
     display: block;
     cursor: pointer; }
@@ -120,8 +132,8 @@ footer {
   width: 100%; }
 
 .loader {
-  width: 150px;
-  height: 150px;
+  width: 50px;
+  height: 50px;
   animation: loader 1.5s linear infinite; }
 
 @media (max-width: 768px) {
